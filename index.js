@@ -2,7 +2,7 @@
 // ~~~~~
 const fs = require("fs");
 const inquirer = require("inquirer");
-const addDepartment = require("./utils/addDepartment");
+const Department = require("./lib/department");
 // Constants
 // ~~~~~
 
@@ -30,7 +30,6 @@ function init() {
   inquirer.prompt(questions).then((answers) => {
     switch (answers.whatToDo) {
       case "Add department":
-        addDepartment();
         break;
 
       default:
