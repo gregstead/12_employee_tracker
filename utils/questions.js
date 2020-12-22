@@ -69,7 +69,16 @@ const employeeQuestions = [
   },
 ];
 
+const finishedQuestions = [
+  {
+    type: "confirm",
+    name: "finished",
+    message: "Finished?",
+  },
+];
+
 exports.initQuestion = initQuestion;
 exports.deptQuestions = deptQuestions;
 exports.roleQuestions = roleQuestions;
 exports.employeeQuestions = employeeQuestions;
+exports.finishedQuestions = finishedQuestions;

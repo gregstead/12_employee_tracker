@@ -1,14 +1,15 @@
 // Dependencies
 // ~~~~~
 
-const fs = require("fs");
-const inquirer = require("inquirer");
-const Department = require("./lib/department");
 const prompts = require("./utils/prompts");
+const connection = require("./utils/connection").connection;
 
 // Constants
 // ~~~~~
-prompts.initPrompt();
+connection.connect((err) => {
+  if (err) throw err;
+  prompts.initPrompt();
+});
 
 // Bonus points if you're able to:
 // Update employee managers
