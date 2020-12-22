@@ -1,44 +1,15 @@
 // Dependencies
 // ~~~~~
+
 const fs = require("fs");
 const inquirer = require("inquirer");
 const Department = require("./lib/department");
+const helpers = require("./utils/helpers");
+const prompts = require("./utils/prompts");
+
 // Constants
 // ~~~~~
-
-// Array of questions for the user
-const questions = [
-  {
-    type: "list",
-    name: "whatToDo",
-    message: "What would you like to do?",
-    choices: [
-      "Add department",
-      "Add role",
-      "Add employee",
-      "View department",
-      "View role",
-      "View employee",
-      "Update department",
-      "Update role",
-      "Update employee",
-    ],
-  },
-];
-
-function init() {
-  inquirer.prompt(questions).then((answers) => {
-    switch (answers.whatToDo) {
-      case "Add department":
-        break;
-
-      default:
-        break;
-    }
-  });
-}
-
-init();
+prompts.initPrompt();
 
 // Bonus points if you're able to:
 // Update employee managers
