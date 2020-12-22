@@ -4,7 +4,6 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const Department = require("./lib/department");
-const helpers = require("./utils/helpers");
 const prompts = require("./utils/prompts");
 
 // Constants

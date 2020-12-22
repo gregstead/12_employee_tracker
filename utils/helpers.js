@@ -1,3 +1,5 @@
+const connection = require("./connection").connection;
+
 // addTo (Obj, Str)
 // Add class instance to
 const addTo = (Obj, Str) => {
@@ -12,4 +14,4 @@ const addTo = (Obj, Str) => {
   });
 };
 
-module.exports = addTo;
+exports.addTo = addTo;
