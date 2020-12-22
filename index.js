@@ -2,7 +2,7 @@
 // ~~~~~
 const fs = require("fs");
 const inquirer = require("inquirer");
-
+const addDepartment = require("./utils/addDepartment");
 // Constants
 // ~~~~~
 
@@ -28,7 +28,14 @@ const questions = [
 
 function init() {
   inquirer.prompt(questions).then((answers) => {
-    console.log("answers :>> ", answers);
+    switch (answers.whatToDo) {
+      case "Add department":
+        addDepartment();
+        break;
+
+      default:
+        break;
+    }
   });
 }
 
