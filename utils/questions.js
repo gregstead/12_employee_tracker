@@ -45,6 +45,31 @@ const roleQuestions = [
   },
 ];
 
+// first_name, last_name, role_id, manager_id
+const employeeQuestions = [
+  {
+    type: "input",
+    name: "first_name",
+    message: "What is the employee's first name?",
+  },
+  {
+    type: "input",
+    name: "last_name",
+    message: "What is the employee's last name?",
+  },
+  {
+    type: "input",
+    name: "role_id",
+    message: "What is the employee's role?", //can I make this selectable?
+  },
+  {
+    type: "input",
+    name: "manager_id",
+    message: "Who is the employee's manager?", //can I make this selectable?
+  },
+];
+
 exports.initQuestion = initQuestion;
 exports.deptQuestions = deptQuestions;
 exports.roleQuestions = roleQuestions;
+exports.employeeQuestions = employeeQuestions;
