@@ -16,7 +16,7 @@ const addTo = (Obj, Str) => {
 // view (Str)
 // View a table in the terminal
 //Get all
-const view = (Str) => {
+const selectAllFrom = (Str) => {
   let queryTemp = `SELECT * FROM ??`;
   queryTemp = mysql.format(queryTemp, [Str]);
   connection.query(queryTemp, (err, res) => {
@@ -26,8 +26,20 @@ const view = (Str) => {
 };
 
 //View Employees
+const viewAllEmployees = () => {
+  const queryTemp = `SELECT first_name, last_name, roles.title, roles.salary, departments.dept_name
+  FROM employees
+  LEFT JOIN roles ON employees.role_id=roles.id
+  INNER JOIN departments ON roles.dept_id=departments.id`;
+  connection.query(queryTemp, (err, res) => {
+    console.table(res);
+    prompts.finished();
+  });
+};
+
 //View Roles
 //View Departments
 
 exports.addTo = addTo;
 exports.view = view;
+exports.viewAllEmployees = viewAllEmployees;

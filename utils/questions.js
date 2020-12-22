@@ -1,18 +1,28 @@
+const Separator = require("inquirer").Separator;
+const connection = require("./connection").connection;
+
 const initQuestion = [
   {
     type: "list",
     name: "whatToDo",
     message: "What would you like to do?",
     choices: [
-      "add department",
-      "add role",
-      "add employee",
-      "view department",
-      "view role",
-      "view employee",
-      "update department",
-      "update role",
-      "update employee",
+      "View All Employees",
+      "View All Employees By Department",
+      "View All Employees By Manager",
+      "Add Employee",
+      "Remove Employee",
+      "Update Employee Role",
+      "Update Employee Manager",
+      new Separator(),
+      "View All Roles",
+      "Add Role",
+      "Remove Role",
+      new Separator(),
+      "View All Departments",
+      "Add Department",
+      "Remove Department",
+      new Separator(),
     ],
   },
 ];

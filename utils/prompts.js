@@ -15,32 +15,35 @@ const Manager = require("../lib/manager");
 const initPrompt = () => {
   inquirer.prompt(questions.initQuestion).then((res) => {
     switch (res.whatToDo) {
-      case "add department":
-        addDept();
+      case "View All Employees":
+        helpers.viewAllEmployees();
         break;
-      case "add role":
-        addRole();
+      case "View All Employees By Department":
         break;
-      case "add employee":
+      case "View All Employees By Manager":
+        break;
+      case "Add Employee":
         addEmployee();
         break;
-      case "view department":
-        helpers.view("departments");
+      case "Remove Employee":
         break;
-      case "view role":
-        helpers.view("roles");
+      case "Update Employee Role":
         break;
-      case "view employee":
-        helpers.view("employees");
+      case "Update Employee Manager":
         break;
-      case "update department":
-        updateDept();
+      case "View All Roles":
         break;
-      case "update role":
-        updateRole();
+      case "Add Role":
+        addRole();
         break;
-      case "update employee":
-        updateEmployee();
+      case "Remove Role":
+        break;
+      case "View All Departments":
+        break;
+      case "Add Department":
+        addDept();
+        break;
+      case "Remove Department":
         break;
       default:
         break;
