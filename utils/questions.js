@@ -17,6 +17,7 @@ const initQuestion = [
   },
 ];
 
+// dept_name
 const deptQuestions = [
   {
     type: "input",
@@ -25,5 +26,25 @@ const deptQuestions = [
   },
 ];
 
+// title, salary, dept_id
+const roleQuestions = [
+  {
+    type: "input",
+    name: "title",
+    message: "What is the role title?",
+  },
+  {
+    type: "input",
+    name: "salary",
+    message: "What is the role salary?",
+  },
+  {
+    type: "input",
+    name: "dept_id",
+    message: "What is the role department?", //can I make this selectable?
+  },
+];
+
 exports.initQuestion = initQuestion;
 exports.deptQuestions = deptQuestions;
+exports.roleQuestions = roleQuestions;

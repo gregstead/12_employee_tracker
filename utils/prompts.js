@@ -3,6 +3,7 @@ const questions = require("./questions");
 const helpers = require("./helpers");
 
 const Department = require("../lib/department");
+const Role = require("../lib/role");
 
 const initPrompt = () => {
   inquirer.prompt(questions.initQuestion).then((res) => {
@@ -31,7 +32,7 @@ const addDept = () => {
 const addRole = () => {
   inquirer.prompt(questions.roleQuestions).then((res) => {
     // Make role instance
-    const role = new Role(res.role_name);
+    const role = new Role(res.title, res.salary, res.dept_id);
     // Write to database
     helpers.addTo(role, "roles");
   });
