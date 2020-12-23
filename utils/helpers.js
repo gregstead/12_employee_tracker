@@ -59,6 +59,17 @@ const viewAllEmployeesByDept = () => {
   });
 };
 
+// View all employees by manager
+const viewAllEmployeesByMgr = () => {
+  const queryTemp = `SELECT concat(A.first_name, ' ', A.last_name) AS manager_name, B.first_name, B.last_name
+  FROM employees A, employees B
+  WHERE A.id = B.manager_id`;
+  connection.query(queryTemp, (err, res) => {
+    console.table(res);
+    prompts.finished();
+  });
+};
+
 //View Roles
 //View Departments
 
@@ -67,3 +78,4 @@ exports.getAllRoles = getAllRoles;
 exports.selectAllFrom = selectAllFrom;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
+exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;

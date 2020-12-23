@@ -22,6 +22,7 @@ const initPrompt = () => {
         helpers.viewAllEmployeesByDept();
         break;
       case "View All Employees By Manager":
+        helpers.viewAllEmployeesByMgr();
         break;
       case "Add Employee":
         addEmployee();
