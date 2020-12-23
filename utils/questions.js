@@ -55,6 +55,10 @@ const roleQuestions = [
   },
 ];
 
+// Get the departments
+// foreach dpartment => dept_name
+// return this to options as array
+
 // first_name, last_name, role_id, manager_id
 const employeeQuestions = [
   {

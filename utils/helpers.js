@@ -13,6 +13,15 @@ const addTo = (Obj, Str) => {
   });
 };
 
+// Get all roles
+const getAllRoles = () => {
+  const queryTemp = ``;
+  connection.query(queryTemp, (err, res) => {
+    if (err) throw err;
+    return res;
+  });
+};
+
 // view (Str)
 // View a table in the terminal
 //Get all
@@ -37,9 +46,24 @@ const viewAllEmployees = () => {
   });
 };
 
+// View all empployees by dept
+const viewAllEmployeesByDept = () => {
+  const queryTemp = `SELECT first_name, last_name, roles.title, roles.salary, departments.dept_name
+  FROM employees
+  RIGHT JOIN roles ON employees.role_id=roles.id
+  INNER JOIN departments ON roles.dept_id=departments.id
+  ORDER BY departments.dept_name`;
+  connection.query(queryTemp, (err, res) => {
+    console.table(res);
+    prompts.finished();
+  });
+};
+
 //View Roles
 //View Departments
 
 exports.addTo = addTo;
-exports.view = view;
+exports.getAllRoles = getAllRoles;
+exports.selectAllFrom = selectAllFrom;
 exports.viewAllEmployees = viewAllEmployees;
+exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
