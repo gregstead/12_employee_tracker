@@ -28,6 +28,7 @@ const initPrompt = () => {
         addEmployee();
         break;
       case "Remove Employee":
+        removeEmplyee();
         break;
       case "Update Employee Role":
         break;
@@ -42,6 +43,7 @@ const initPrompt = () => {
       case "Remove Role":
         break;
       case "View All Departments":
+        helpers.viewAllDepts();
         break;
       case "Add Department":
         addDept();
@@ -74,7 +76,7 @@ const addRole = () => {
 
 const addEmployee = () => {
   inquirer.prompt(questions.employeeQuestions).then((res) => {
-    // Make role instance
+    // Make employee instance
     const employee = new Employee(
       res.first_name,
       res.last_name,
@@ -83,6 +85,19 @@ const addEmployee = () => {
     );
     // Write to database
     helpers.addTo(employee, "employees");
+  });
+};
+
+const removeEmplyee = (tableStr) => {
+  inquirer.prompt(questions.removeEmplyeeQuestions).then(async (res) => {
+    const employee = new Employee(
+      res.first_name,
+      res.last_name,
+      res.role_id,
+      res.manager_id
+    );
+    //Remove from database
+    helpers.removeFrom(employee, "employees");
   });
 };
 

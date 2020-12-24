@@ -81,6 +81,34 @@ const employeeQuestions = [
     name: "manager_id",
     message: "Who is the employee's manager?", //can I make this selectable?
   },
+  {
+    type: "confirm",
+    name: "is_manager",
+    message: "Is this employee a manager?",
+  },
+];
+
+const removeEmplyeeQuestions = [
+  {
+    type: "input",
+    name: "first_name",
+    message: "What is the employee's first name?",
+  },
+  {
+    type: "input",
+    name: "last_name",
+    message: "What is the employee's last name?",
+  },
+  {
+    type: "input",
+    name: "role_id",
+    message: "What is the employee's role?", //can I make this selectable?
+  },
+  {
+    type: "input",
+    name: "manager_id",
+    message: "Who is the employee's manager?", //can I make this selectable?
+  },
 ];
 
 const finishedQuestions = [
