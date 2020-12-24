@@ -71,6 +71,7 @@ const viewAllEmployeesByMgr = () => {
 };
 
 //View Roles
+const viewAllRoles = () => {};
 //View Departments
 
 exports.addTo = addTo;
@@ -79,3 +80,4 @@ exports.selectAllFrom = selectAllFrom;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
+exports.viewAllRoles = viewAllRoles;

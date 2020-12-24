@@ -34,6 +34,7 @@ const initPrompt = () => {
       case "Update Employee Manager":
         break;
       case "View All Roles":
+        helpers.viewAllRoles();
         break;
       case "Add Role":
         addRole();
