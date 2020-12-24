@@ -71,7 +71,13 @@ const viewAllEmployeesByMgr = () => {
 };
 
 //View Roles
-const viewAllRoles = () => {};
+const viewAllRoles = () => {
+  const queryTemp = `SELECT title, id, dept_id, salary FROM roles`;
+  connection.query(queryTemp, (err, res) => {
+    console.table(res);
+    prompts.finished();
+  });
+};
 //View Departments
 
 exports.addTo = addTo;
