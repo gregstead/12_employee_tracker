@@ -4,6 +4,7 @@ const inquirer = require("inquirer");
 const questions = require("./questions");
 const helpers = require("./helpers");
 const connection = require("./connection").connection;
+const format = require("mysql").format;
 
 const Department = require("../lib/department");
 const Role = require("../lib/role");
@@ -88,15 +89,40 @@ const addEmployee = () => {
   });
 };
 
+// Remove an employee
 const removeEmployee = () => {
+  let name;
+  // Get all employees
   connection.query(`SELECT * FROM employees`, (err, res) => {
     const arrTemp = [];
     if (err) throw err;
     for (let i = 0; i < res.length; i++) {
-      const element = `${res[i].first_name} ${res[i].last_name}  || ID: ${res[i].id}`;
+      const element = `${res[i].first_name} ${res[i].last_name}\t|| ${res[i].id}`;
+      // Push employees to an iterable array
       arrTemp.push(element);
     }
-    console.log(arrTemp);
+    // Pass the array to the user
+    inquirer
+      .prompt({
+        type: "list",
+        name: "id",
+        message: "Which employee would you like to remove?",
+        choices: arrTemp,
+      })
+      .then((res) => {
+        // Get the employee id from the response
+        name = res.id.split("||")[0].trim();
+        res.id = res.id.split("||")[1].trim();
+        // Get the name for output
+
+        let queryTemp = `DELETE FROM employees WHERE id=?`;
+        queryTemp = format(queryTemp, res.id);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`${name} removed from database.`);
+          finished();
+        });
+      });
   });
 };
 
