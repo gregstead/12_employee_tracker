@@ -28,7 +28,7 @@ const initPrompt = () => {
         addEmployee();
         break;
       case "Remove Employee":
-        removeEmplyee();
+        removeEmployee();
         break;
       case "Update Employee Role":
         break;
@@ -88,16 +88,15 @@ const addEmployee = () => {
   });
 };
 
-const removeEmplyee = (tableStr) => {
-  inquirer.prompt(questions.removeEmplyeeQuestions).then(async (res) => {
-    const employee = new Employee(
-      res.first_name,
-      res.last_name,
-      res.role_id,
-      res.manager_id
-    );
-    //Remove from database
-    helpers.removeFrom(employee, "employees");
+const removeEmployee = () => {
+  connection.query(`SELECT * FROM employees`, (err, res) => {
+    const arrTemp = [];
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      const element = `${res[i].first_name} ${res[i].last_name}  || ID: ${res[i].id}`;
+      arrTemp.push(element);
+    }
+    console.log(arrTemp);
   });
 };
 

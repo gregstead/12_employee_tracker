@@ -1,5 +1,5 @@
 const Separator = require("inquirer").Separator;
-const connection = require("./connection").connection;
+const helpers = require("./helpers");
 
 const initQuestion = [
   {
@@ -88,26 +88,11 @@ const employeeQuestions = [
   },
 ];
 
-const removeEmplyeeQuestions = [
+const removeEmployeeQuestions = [
   {
-    type: "input",
-    name: "first_name",
-    message: "What is the employee's first name?",
-  },
-  {
-    type: "input",
-    name: "last_name",
-    message: "What is the employee's last name?",
-  },
-  {
-    type: "input",
-    name: "role_id",
-    message: "What is the employee's role?", //can I make this selectable?
-  },
-  {
-    type: "input",
-    name: "manager_id",
-    message: "Who is the employee's manager?", //can I make this selectable?
+    type: "list",
+    name: "employee",
+    choices: [],
   },
 ];
 

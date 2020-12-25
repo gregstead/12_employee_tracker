@@ -4,8 +4,6 @@
 const prompts = require("./utils/prompts");
 const connection = require("./utils/connection").connection;
 
-// Constants
-// ~~~~~
 connection.connect((err) => {
   if (err) throw err;
   prompts.initPrompt();
