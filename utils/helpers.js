@@ -2,6 +2,7 @@ const prompts = require("./prompts");
 const mysql = require("mysql");
 const connection = require("./connection").connection;
 const Employee = require("../lib/employee");
+const inquirer = require("inquirer");
 
 // addTo (Object, String)
 // Add row object to table
@@ -24,6 +25,8 @@ const removeFrom = (rowObj, tableStr) => {
     prompts.finished();
   });
 };
+
+// EMPLOYEE FUNCTIONS //
 
 //View Employees
 const viewAllEmployees = () => {
@@ -61,6 +64,43 @@ const viewAllEmployeesByMgr = () => {
   });
 };
 
+// Remove employee
+const removeEmployee = () => {
+  let name;
+  // Get all employees
+  connection.query(`SELECT * FROM employees`, (err, res) => {
+    const arrTemp = [];
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      const element = `${res[i].first_name} ${res[i].last_name}\t|| ${res[i].id}`;
+      // Push employees to an iterable array
+      arrTemp.push(element);
+    }
+    // Pass the array to the user
+    inquirer
+      .prompt({
+        type: "list",
+        name: "id",
+        message: "Which employee would you like to remove?",
+        choices: arrTemp,
+      })
+      .then((res) => {
+        // Get the employee id from the response
+        name = res.id.split("||")[0].trim();
+        res.id = res.id.split("||")[1].trim();
+        // Get the name for output
+
+        let queryTemp = `DELETE FROM employees WHERE id=?`;
+        queryTemp = mysql.format(queryTemp, res.id);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`${name} removed from database.`);
+          prompts.finished();
+        });
+      });
+  });
+};
+
 //View Roles
 const viewAllRoles = () => {
   const queryTemp = `SELECT title AS Title, id AS 'ID', dept_id AS 'Department ID', salary AS Salary FROM roles`;
@@ -86,4 +126,4 @@ exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
 exports.viewAllRoles = viewAllRoles;
 exports.viewAllDepts = viewAllDepts;
-exports.removeFrom = removeFrom;
+exports.removeEmployee = removeEmployee;
