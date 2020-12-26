@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const connection = require("./connection").connection;
 const Employee = require("../lib/employee");
 const inquirer = require("inquirer");
+const questions = require("./questions");
 
 // addTo (Object, String)
 // Add row object to table
@@ -11,11 +12,49 @@ const addTo = (rowObj, tableStr) => {
   queryTemp = mysql.format(queryTemp, [tableStr, rowObj]);
   connection.query(queryTemp, (err, res) => {
     if (err) throw err;
+    console.log(`Entry added to ${tableStr}`);
     prompts.finished();
   });
 };
 
 // EMPLOYEE FUNCTIONS //
+
+const addEmployee = () => {
+  let name;
+  // Get all employees
+  connection.query(
+    `SELECT * FROM employees WHERE is_manager=true`,
+    (err, res) => {
+      const arrTemp = [];
+      if (err) throw err;
+      for (let i = 0; i < res.length; i++) {
+        const element = `${res[i].first_name} ${res[i].last_name} || ${res[i].id}`;
+        // Push employees to an iterable array
+        arrTemp.push(element);
+      }
+      // Questions
+      const empQuestions = questions.employeeQuestions;
+      empQuestions.push({
+        type: "list",
+        name: "manager_id",
+        message: "Who is the employee's manager?",
+        choices: arrTemp,
+      });
+      // Pass the array to the user
+      inquirer.prompt(empQuestions).then((res) => {
+        // Make employee instance
+        const employee = new Employee(
+          res.first_name,
+          res.last_name,
+          res.role_id,
+          res.manager_id.split("||")[1].trim()
+        );
+        // Write to database
+        addTo(employee, "employees");
+      });
+    }
+  );
+};
 
 //View Employees
 const viewAllEmployees = () => {
@@ -182,6 +221,7 @@ const removeDepartment = () => {
 };
 
 exports.addTo = addTo;
+exports.addEmployee = addEmployee;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;

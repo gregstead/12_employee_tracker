@@ -76,11 +76,6 @@ const employeeQuestions = [
     message: "What is the employee's role?", //can I make this selectable?
   },
   {
-    type: "input",
-    name: "manager_id",
-    message: "Who is the employee's manager?", //can I make this selectable?
-  },
-  {
     type: "confirm",
     name: "is_manager",
     message: "Is this employee a manager?",

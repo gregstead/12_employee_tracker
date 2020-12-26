@@ -25,7 +25,7 @@ const initPrompt = () => {
         helpers.viewAllEmployeesByMgr();
         break;
       case "Add Employee":
-        addEmployee();
+        helpers.addEmployee();
         break;
       case "Remove Employee":
         helpers.removeEmployee();
@@ -73,20 +73,6 @@ const addRole = () => {
     const role = new Role(res.title, res.salary, res.dept_id);
     // Write to database
     helpers.addTo(role, "roles");
-  });
-};
-
-const addEmployee = () => {
-  inquirer.prompt(questions.employeeQuestions).then((res) => {
-    // Make employee instance
-    const employee = new Employee(
-      res.first_name,
-      res.last_name,
-      res.role_id,
-      res.manager_id
-    );
-    // Write to database
-    helpers.addTo(employee, "employees");
   });
 };
 
