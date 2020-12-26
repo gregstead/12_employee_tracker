@@ -70,11 +70,11 @@ const employeeQuestions = [
     name: "last_name",
     message: "What is the employee's last name?",
   },
-  {
-    type: "input",
-    name: "role_id",
-    message: "What is the employee's role?", //can I make this selectable?
-  },
+  // {
+  //   type: "input",
+  //   name: "role_id",
+  //   message: "What is the employee's role?", //can I make this selectable?
+  // },
   {
     type: "confirm",
     name: "is_manager",

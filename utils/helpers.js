@@ -19,9 +19,38 @@ const addTo = (rowObj, tableStr) => {
 
 // EMPLOYEE FUNCTIONS //
 
+const selectAll = (fromStr, whereStr) => {
+  let queryTemp = `SELECT * FROM ?`;
+  queryTemp = mysql.format(queryTemp, [fromStr]);
+  connection.query(queryTemp, (err, res) => {
+    if (err) throw err;
+    return res;
+  });
+};
+
+const selectAllWhere = (fromStr, whereStr, value) => {
+  let queryTemp = `SELECT * FROM ?? WHERE ${whereStr}= ?`;
+  queryTemp = mysql.format(queryTemp, [fromStr, value]);
+  connection.query(queryTemp, (err, res) => {
+    if (err) throw err;
+    return res;
+  });
+};
+
+const addEmployeeTest = () => {
+  connection.query(
+    `SELECT concat(first_name, ' ', last_name) AS 'Name' FROM employees WHERE is_manager=true;
+    SELECT title FROM roles`,
+    (err, res) => {
+      console.log("res :>> ", res);
+      console.log("res[0].length :>> ", res[0].length);
+    }
+  );
+};
+
 const addEmployee = () => {
   let name;
-  // Get all employees
+  // Get all managers
   connection.query(
     `SELECT * FROM employees WHERE is_manager=true`,
     (err, res) => {
@@ -29,7 +58,7 @@ const addEmployee = () => {
       if (err) throw err;
       for (let i = 0; i < res.length; i++) {
         const element = `${res[i].first_name} ${res[i].last_name} || ${res[i].id}`;
-        // Push employees to an iterable array
+        // Push managers to an iterable array
         arrTemp.push(element);
       }
       // Questions
@@ -85,8 +114,10 @@ const viewAllEmployeesByDept = () => {
 const viewAllEmployeesByMgr = () => {
   const queryTemp = `SELECT concat(A.first_name, ' ', A.last_name) AS 'Manager Name', B.first_name AS 'Employee First Name', B.last_name AS 'Employee Last Name'
   FROM employees A, employees B
-  WHERE A.id = B.manager_id`;
+  WHERE A.id = B.manager_id
+  ORDER BY B.manager_id`;
   connection.query(queryTemp, (err, res) => {
+    if (err) throw err;
     console.table(res);
     prompts.finished();
   });
@@ -222,6 +253,7 @@ const removeDepartment = () => {
 
 exports.addTo = addTo;
 exports.addEmployee = addEmployee;
+exports.addEmployeeTest = addEmployeeTest;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
