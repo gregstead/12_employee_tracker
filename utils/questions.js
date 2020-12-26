@@ -1,5 +1,4 @@
 const Separator = require("inquirer").Separator;
-const helpers = require("./helpers");
 
 const initQuestion = [
   {
@@ -87,17 +86,6 @@ const employeeQuestions = [
     message: "Is this employee a manager?",
   },
 ];
-
-const removeRoleQuestion = () => {
-  return [
-    {
-      type: "list",
-      name: "remove_id",
-      message: "Which role would you like to femove?",
-      choices: [],
-    },
-  ];
-};
 
 const finishedQuestions = [
   {

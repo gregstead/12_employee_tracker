@@ -15,17 +15,6 @@ const addTo = (rowObj, tableStr) => {
   });
 };
 
-// removeFrom (Object, String)
-// Remove row object from table
-const removeFrom = (rowObj, tableStr) => {
-  let queryTemp = `DELETE FROM ?? WHERE id=?`;
-  queryTemp = mysql.format(queryTemp, [tableStr, rowObj.id]);
-  connection.query(queryTemp, (err, res) => {
-    if (err) throw err;
-    prompts.finished();
-  });
-};
-
 // EMPLOYEE FUNCTIONS //
 
 //View Employees
@@ -72,7 +61,7 @@ const removeEmployee = () => {
     const arrTemp = [];
     if (err) throw err;
     for (let i = 0; i < res.length; i++) {
-      const element = `${res[i].first_name} ${res[i].last_name}\t|| ${res[i].id}`;
+      const element = `${res[i].first_name} ${res[i].last_name} || ${res[i].id}`;
       // Push employees to an iterable array
       arrTemp.push(element);
     }
@@ -110,6 +99,42 @@ const viewAllRoles = () => {
   });
 };
 
+const removeRole = () => {
+  let name;
+  // Get all employees
+  connection.query(`SELECT * FROM roles`, (err, res) => {
+    const arrTemp = [];
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      const element = `${res[i].title} || ${res[i].id}`;
+      // Push employees to an iterable array
+      arrTemp.push(element);
+    }
+    // Pass the array to the user
+    inquirer
+      .prompt({
+        type: "list",
+        name: "id",
+        message: "Which role would you like to remove?",
+        choices: arrTemp,
+      })
+      .then((res) => {
+        // Get the employee id from the response
+        name = res.id.split("||")[0].trim();
+        res.id = res.id.split("||")[1].trim();
+        // Get the name for output
+
+        let queryTemp = `DELETE FROM roles WHERE id=?`;
+        queryTemp = mysql.format(queryTemp, res.id);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`${name} removed from database.`);
+          prompts.finished();
+        });
+      });
+  });
+};
+
 //View Departments
 const viewAllDepts = () => {
   const queryTemp = `SELECT dept_name, id FROM departments`;
@@ -124,6 +149,7 @@ exports.addTo = addTo;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
-exports.viewAllRoles = viewAllRoles;
-exports.viewAllDepts = viewAllDepts;
 exports.removeEmployee = removeEmployee;
+exports.viewAllRoles = viewAllRoles;
+exports.removeRole = removeRole;
+exports.viewAllDepts = viewAllDepts;
