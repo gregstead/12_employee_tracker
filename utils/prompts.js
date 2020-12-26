@@ -50,6 +50,7 @@ const initPrompt = () => {
         addDept();
         break;
       case "Remove Department":
+        helpers.removeDepartment();
         break;
       default:
         break;

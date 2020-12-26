@@ -145,6 +145,42 @@ const viewAllDepts = () => {
   });
 };
 
+const removeDepartment = () => {
+  let name;
+  // Get all employees
+  connection.query(`SELECT * FROM departments`, (err, res) => {
+    const arrTemp = [];
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      const element = `${res[i].dept_name} || ${res[i].id}`;
+      // Push employees to an iterable array
+      arrTemp.push(element);
+    }
+    // Pass the array to the user
+    inquirer
+      .prompt({
+        type: "list",
+        name: "id",
+        message: "Which department would you like to remove?",
+        choices: arrTemp,
+      })
+      .then((res) => {
+        // Get the employee id from the response
+        name = res.id.split("||")[0].trim();
+        res.id = res.id.split("||")[1].trim();
+        // Get the name for output
+
+        let queryTemp = `DELETE FROM departments WHERE id=?`;
+        queryTemp = mysql.format(queryTemp, res.id);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`${name} removed from database.`);
+          prompts.finished();
+        });
+      });
+  });
+};
+
 exports.addTo = addTo;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
@@ -153,3 +189,4 @@ exports.removeEmployee = removeEmployee;
 exports.viewAllRoles = viewAllRoles;
 exports.removeRole = removeRole;
 exports.viewAllDepts = viewAllDepts;
+exports.removeDepartment = removeDepartment;
