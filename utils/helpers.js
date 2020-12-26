@@ -114,8 +114,10 @@ const viewAllEmployeesByDept = () => {
 const viewAllEmployeesByMgr = () => {
   const queryTemp = `SELECT concat(A.first_name, ' ', A.last_name) AS 'Manager Name', B.first_name AS 'Employee First Name', B.last_name AS 'Employee Last Name'
   FROM employees A, employees B
-  WHERE A.id = B.manager_id`;
+  WHERE A.id = B.manager_id
+  ORDER BY B.manager_id`;
   connection.query(queryTemp, (err, res) => {
+    if (err) throw err;
     console.table(res);
     prompts.finished();
   });
