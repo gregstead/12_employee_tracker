@@ -21,11 +21,55 @@ const addTo = (rowObj, tableStr) => {
 
 const addEmployeeTest = () => {
   connection.query(
-    `SELECT concat(first_name, ' ', last_name) AS 'Name' FROM employees WHERE is_manager=true;
-    SELECT title FROM roles`,
+    `SELECT id AS 'id', concat(first_name, ' ', last_name) AS 'name' FROM employees WHERE is_manager=true;
+    SELECT id, title FROM roles`,
     (err, res) => {
-      console.log("res :>> ", res);
-      console.log("res[0].length :>> ", res[0].length);
+      // Make an iterable of manager names
+      const managerSelect = [];
+      for (let i = 0; i < res[0].length; i++) {
+        const element = `${res[0][i].id} : ${res[0][i].name}`;
+        managerSelect.push(element);
+      }
+      // Format the question for inquirer
+      const managerQuestion = {
+        type: "list",
+        name: "manager_answer",
+        message: "Who is the employee's manager",
+        choices: managerSelect,
+      };
+
+      // Make an iterable of role names
+      const roleSelect = [];
+      for (let i = 0; i < res[1].length; i++) {
+        const element = `${res[1][i].id} : ${res[1][i].title}`;
+        roleSelect.push(element);
+      }
+      // Format the question for inquirer
+      const roleQuestion = {
+        type: "list",
+        name: "role_answer",
+        message: "What is the employee's role",
+        choices: roleSelect,
+      };
+
+      // Get static questions
+      const promptQuestions = questions.employeeQuestions;
+      // Append dynamic questions
+      promptQuestions.push(managerQuestion, roleQuestion);
+
+      // Pass the array to the user
+      inquirer.prompt(promptQuestions).then((res) => {
+        // Make a new Employee object - first_name, last_name, role_id, manager_id, is_manager
+        const newEmployee = new Employee(
+          res.first_name,
+          res.last_name,
+          res.role_answer.split(":")[0].trim(),
+          res.manager_answer.split(":")[0].trim(),
+          res.is_manager
+        );
+        // Add to db
+        addTo(newEmployee, "employees");
+      });
     }
   );
 };
