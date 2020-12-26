@@ -12,6 +12,9 @@ const connection = mysql.createConnection({
   //Password
   password: "pathword",
   database: "employees_db",
+
+  // Allow mutile connections
+  multipleStatements: true,
 });
 
 exports.connection = connection;

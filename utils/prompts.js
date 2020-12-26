@@ -25,7 +25,7 @@ const initPrompt = () => {
         helpers.viewAllEmployeesByMgr();
         break;
       case "Add Employee":
-        helpers.addEmployee();
+        helpers.addEmployeeTest();
         break;
       case "Remove Employee":
         helpers.removeEmployee();
@@ -84,5 +84,4 @@ const finished = () => {
 
 exports.initPrompt = initPrompt;
 exports.addDept = addDept;
-exports.addEmployee = addEmployee;
 exports.finished = finished;
