@@ -91,11 +91,11 @@ const removeEmployee = () => {
         // Get the name for output
 
         let queryTemp = `DELETE FROM employees WHERE id=?`;
-        queryTemp = format(queryTemp, res.id);
+        queryTemp = mysql.format(queryTemp, res.id);
         connection.query(queryTemp, (err, res) => {
           if (err) throw err;
           console.log(`${name} removed from database.`);
-          finished();
+          prompts.finished();
         });
       });
   });
