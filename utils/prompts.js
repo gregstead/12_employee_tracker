@@ -25,14 +25,16 @@ const initPrompt = () => {
         helpers.viewAllEmployeesByMgr();
         break;
       case "Add Employee":
-        helpers.addEmployeeTest();
+        helpers.addEmployee();
         break;
       case "Remove Employee":
         helpers.removeEmployee();
         break;
       case "Update Employee Role":
+        helpers.updateEmployeeRole();
         break;
       case "Update Employee Manager":
+        helpers.updateEmployeeManager();
         break;
       case "View All Roles":
         helpers.viewAllRoles();

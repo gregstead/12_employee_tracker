@@ -19,7 +19,7 @@ const addTo = (rowObj, tableStr) => {
 
 // EMPLOYEE FUNCTIONS //
 
-const addEmployeeTest = () => {
+const addEmployee = () => {
   connection.query(
     `SELECT id AS 'id', concat(first_name, ' ', last_name) AS 'name' FROM employees WHERE is_manager=true;
     SELECT id, title FROM roles`,
@@ -74,38 +74,51 @@ const addEmployeeTest = () => {
   );
 };
 
-const addEmployee = () => {
-  let name;
-  // Get all managers
+const updateEmployeeRole = () => {
+  // Queries - all employees, all roles
   connection.query(
-    `SELECT * FROM employees WHERE is_manager=true`,
+    `SELECT id AS 'id', concat(first_name, ' ',last_name) AS 'name' FROM employees;
+    SELECT * FROM roles`,
     (err, res) => {
-      const arrTemp = [];
-      if (err) throw err;
-      for (let i = 0; i < res.length; i++) {
-        const element = `${res[i].first_name} ${res[i].last_name} || ${res[i].id}`;
-        // Push managers to an iterable array
-        arrTemp.push(element);
+      const employeeSelect = [];
+      for (let i = 0; i < res[1].length; i++) {
+        const element = `${res[0][i].id} : ${res[0][i].name}`;
+        employeeSelect.push(element);
       }
-      // Questions
-      const empQuestions = questions.employeeQuestions;
-      empQuestions.push({
+      // Format the question for inquirer
+      const employeeQuestion = {
         type: "list",
-        name: "manager_id",
-        message: "Who is the employee's manager?",
-        choices: arrTemp,
-      });
+        name: "newEmployee",
+        message: "Which employee would you like to update?",
+        choices: employeeSelect,
+      };
+
+      const roleSelect = [];
+      for (let i = 0; i < res[1].length; i++) {
+        const element = `${res[1][i].id} : ${res[1][i].title}`;
+        roleSelect.push(element);
+      }
+      // Format the question for inquirer
+      const roleQuestion = {
+        type: "list",
+        name: "newRole",
+        message: "What is the employee's new role",
+        choices: roleSelect,
+      };
+      promptQuestions = [employeeQuestion, roleQuestion];
       // Pass the array to the user
-      inquirer.prompt(empQuestions).then((res) => {
-        // Make employee instance
-        const employee = new Employee(
-          res.first_name,
-          res.last_name,
-          res.role_id,
-          res.manager_id.split("||")[1].trim()
-        );
-        // Write to database
-        addTo(employee, "employees");
+      inquirer.prompt(promptQuestions).then((res) => {
+        console.log("res :>> ", res);
+        let queryTemp = `UPDATE employees SET role_id = ? WHERE id = ?;`;
+        queryTemp = mysql.format(queryTemp, [
+          res.newRole.split(":")[0].trim(),
+          res.newEmployee.split(":")[0].trim(),
+        ]);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`Record updated`);
+          prompts.finished();
+        });
       });
     }
   );
@@ -113,7 +126,7 @@ const addEmployee = () => {
 
 //View Employees
 const viewAllEmployees = () => {
-  const queryTemp = `SELECT concat(first_name, ' ', last_name) AS 'Name', roles.title AS 'Title', roles.salary AS 'Salary', departments.dept_name AS 'Department'
+  const queryTemp = `SELECT concat(first_name, ' ', last_name) AS 'name', roles.title AS 'title', roles.salary AS 'salary', departments.dept_name AS 'department'
   FROM employees
   LEFT JOIN roles ON employees.role_id=roles.id
   INNER JOIN departments ON roles.dept_id=departments.id`;
@@ -125,7 +138,7 @@ const viewAllEmployees = () => {
 
 // View all empployees by dept
 const viewAllEmployeesByDept = () => {
-  const queryTemp = `SELECT first_name AS 'First Name', last_name AS 'Last Name', roles.title AS 'Title', roles.salary AS 'Salary', departments.dept_name AS 'Department Name'
+  const queryTemp = `SELECT first_name AS 'first name', last_name AS 'Last Name', roles.title AS 'Title', roles.salary AS 'salary', departments.dept_name AS 'department name'
   FROM employees
   RIGHT JOIN roles ON employees.role_id=roles.id
   INNER JOIN departments ON roles.dept_id=departments.id
@@ -138,7 +151,7 @@ const viewAllEmployeesByDept = () => {
 
 // View all employees by manager
 const viewAllEmployeesByMgr = () => {
-  const queryTemp = `SELECT concat(A.first_name, ' ', A.last_name) AS 'Manager Name', B.first_name AS 'Employee First Name', B.last_name AS 'Employee Last Name'
+  const queryTemp = `SELECT concat(A.first_name, ' ', A.last_name) AS 'manager name', B.first_name AS 'employer first name', B.last_name AS 'employee last name'
   FROM employees A, employees B
   WHERE A.id = B.manager_id
   ORDER BY B.manager_id`;
@@ -279,11 +292,11 @@ const removeDepartment = () => {
 
 exports.addTo = addTo;
 exports.addEmployee = addEmployee;
-exports.addEmployeeTest = addEmployeeTest;
 exports.viewAllEmployees = viewAllEmployees;
 exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
 exports.removeEmployee = removeEmployee;
+exports.updateEmployeeRole = updateEmployeeRole;
 exports.viewAllRoles = viewAllRoles;
 exports.removeRole = removeRole;
 exports.viewAllDepts = viewAllDepts;
