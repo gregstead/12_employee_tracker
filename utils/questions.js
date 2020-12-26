@@ -88,13 +88,16 @@ const employeeQuestions = [
   },
 ];
 
-const removeEmployeeQuestions = [
-  {
-    type: "list",
-    name: "employee",
-    choices: [],
-  },
-];
+const removeRoleQuestion = () => {
+  return [
+    {
+      type: "list",
+      name: "remove_id",
+      message: "Which role would you like to femove?",
+      choices: [],
+    },
+  ];
+};
 
 const finishedQuestions = [
   {

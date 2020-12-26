@@ -28,7 +28,7 @@ const initPrompt = () => {
         addEmployee();
         break;
       case "Remove Employee":
-        helpers.removeEmployee();
+        helpers.removeEmployee("employee");
         break;
       case "Update Employee Role":
         break;
