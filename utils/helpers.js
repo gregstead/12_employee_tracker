@@ -19,24 +19,6 @@ const addTo = (rowObj, tableStr) => {
 
 // EMPLOYEE FUNCTIONS //
 
-const selectAll = (fromStr, whereStr) => {
-  let queryTemp = `SELECT * FROM ?`;
-  queryTemp = mysql.format(queryTemp, [fromStr]);
-  connection.query(queryTemp, (err, res) => {
-    if (err) throw err;
-    return res;
-  });
-};
-
-const selectAllWhere = (fromStr, whereStr, value) => {
-  let queryTemp = `SELECT * FROM ?? WHERE ${whereStr}= ?`;
-  queryTemp = mysql.format(queryTemp, [fromStr, value]);
-  connection.query(queryTemp, (err, res) => {
-    if (err) throw err;
-    return res;
-  });
-};
-
 const addEmployeeTest = () => {
   connection.query(
     `SELECT concat(first_name, ' ', last_name) AS 'Name' FROM employees WHERE is_manager=true;
