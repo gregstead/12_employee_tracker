@@ -1,9 +1,12 @@
 const prompts = require("./prompts");
 const mysql = require("mysql");
 const connection = require("./connection").connection;
-const Employee = require("../lib/employee");
 const inquirer = require("inquirer");
 const questions = require("./questions");
+
+const Employee = require("../lib/employee");
+const Role = require("../lib/role");
+const Department = require("../lib/department");
 
 // addTo (Object, String)
 // Add row object to table
@@ -249,6 +252,43 @@ const removeEmployee = () => {
   });
 };
 
+// ROLE FUNCTIONS //
+
+// Add role
+const addRole = () => {
+  //get all dept names
+  connection.query(`SELECT * FROM departments`, (err, res) => {
+    if (err) throw err;
+    // make and iterable of dept names
+    const departmentSelect = [];
+    for (let i = 0; i < res.length; i++) {
+      const element = `${res[i].id} : ${res[i].dept_name}`;
+      departmentSelect.push(element);
+    }
+    // Format the question for inquirer
+    const departmentQuestion = {
+      type: "list",
+      name: "dept_id",
+      message: "What is the role's department?",
+      choices: departmentSelect,
+    };
+    // Get static questions
+    const promptQuestions = questions.roleQuestions;
+    promptQuestions.push(departmentQuestion);
+    //Pass the array to the user
+    inquirer.prompt(promptQuestions).then((res) => {
+      // make a new Role object
+      const newRole = new Role(
+        res.title,
+        res.salary,
+        res.dept_id.split(":")[0].trim()
+      );
+      // Add to db
+      addTo(newRole, "roles");
+    });
+  });
+};
+
 //View Roles
 const viewAllRoles = () => {
   const queryTemp = `SELECT title AS Title, id AS 'ID', dept_id AS 'Department ID', salary AS Salary FROM roles`;
@@ -258,6 +298,7 @@ const viewAllRoles = () => {
   });
 };
 
+// Remove role
 const removeRole = () => {
   let name;
   // Get all employees
@@ -348,6 +389,7 @@ exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
 exports.removeEmployee = removeEmployee;
 exports.updateEmployeeRole = updateEmployeeRole;
 exports.updateEmployeeManager = updateEmployeeManager;
+exports.addRole = addRole;
 exports.viewAllRoles = viewAllRoles;
 exports.removeRole = removeRole;
 exports.viewAllDepts = viewAllDepts;

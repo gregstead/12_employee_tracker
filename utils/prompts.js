@@ -40,7 +40,7 @@ const initPrompt = () => {
         helpers.viewAllRoles();
         break;
       case "Add Role":
-        addRole();
+        helpers.addRole();
         break;
       case "Remove Role":
         helpers.removeRole();

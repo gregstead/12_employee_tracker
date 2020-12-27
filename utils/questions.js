@@ -47,11 +47,6 @@ const roleQuestions = [
     name: "salary",
     message: "What is the role salary?",
   },
-  {
-    type: "input",
-    name: "dept_id",
-    message: "What is the role department?", //can I make this selectable?
-  },
 ];
 
 // Get the departments

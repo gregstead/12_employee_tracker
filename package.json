@@ -4,7 +4,7 @@
   "description": "A tool for managing a company's employees using node, inquirer, and MySQL.",
   "main": "index.js",
   "scripts": {
-    "test": ""
+    "start": "node index"
   },
   "repository": {
     "type": "git",
