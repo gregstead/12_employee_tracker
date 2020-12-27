@@ -74,6 +74,7 @@ const addEmployee = () => {
   );
 };
 
+// Update employee role
 const updateEmployeeRole = () => {
   // Queries - all employees, all roles
   connection.query(
@@ -102,16 +103,65 @@ const updateEmployeeRole = () => {
       const roleQuestion = {
         type: "list",
         name: "newRole",
-        message: "What is the employee's new role",
+        message: "What is the employee's new role?",
         choices: roleSelect,
       };
       promptQuestions = [employeeQuestion, roleQuestion];
       // Pass the array to the user
       inquirer.prompt(promptQuestions).then((res) => {
-        console.log("res :>> ", res);
         let queryTemp = `UPDATE employees SET role_id = ? WHERE id = ?;`;
         queryTemp = mysql.format(queryTemp, [
           res.newRole.split(":")[0].trim(),
+          res.newEmployee.split(":")[0].trim(),
+        ]);
+        connection.query(queryTemp, (err, res) => {
+          if (err) throw err;
+          console.log(`Record updated`);
+          prompts.finished();
+        });
+      });
+    }
+  );
+};
+
+const updateEmployeeManager = () => {
+  // Queries - all employees, all roles
+  connection.query(
+    `SELECT id AS 'id', concat(first_name, ' ',last_name) AS 'name' FROM employees;
+    SELECT id AS 'id', concat(first_name, ' ',last_name) AS 'name' FROM employees WHERE is_manager=true`,
+    (err, res) => {
+      if (err) throw err;
+      const employeeSelect = [];
+      for (let i = 0; i < res[1].length; i++) {
+        const element = `${res[0][i].id} : ${res[0][i].name}`;
+        employeeSelect.push(element);
+      }
+      // Format the question for inquirer
+      const employeeQuestion = {
+        type: "list",
+        name: "newEmployee",
+        message: "Which employee would you like to update?",
+        choices: employeeSelect,
+      };
+
+      const managerSelect = [];
+      for (let i = 0; i < res[1].length; i++) {
+        const element = `${res[1][i].id} : ${res[1][i].name}`;
+        managerSelect.push(element);
+      }
+      // Format the question for inquirer
+      const managerQuestion = {
+        type: "list",
+        name: "newManager",
+        message: "Who is the employee's new manager?",
+        choices: managerSelect,
+      };
+      promptQuestions = [employeeQuestion, managerQuestion];
+      // Pass the array to the user
+      inquirer.prompt(promptQuestions).then((res) => {
+        let queryTemp = `UPDATE employees SET manager_id = ? WHERE id = ?;`;
+        queryTemp = mysql.format(queryTemp, [
+          res.newManager.split(":")[0].trim(),
           res.newEmployee.split(":")[0].trim(),
         ]);
         connection.query(queryTemp, (err, res) => {
@@ -297,6 +347,7 @@ exports.viewAllEmployeesByDept = viewAllEmployeesByDept;
 exports.viewAllEmployeesByMgr = viewAllEmployeesByMgr;
 exports.removeEmployee = removeEmployee;
 exports.updateEmployeeRole = updateEmployeeRole;
+exports.updateEmployeeManager = updateEmployeeManager;
 exports.viewAllRoles = viewAllRoles;
 exports.removeRole = removeRole;
 exports.viewAllDepts = viewAllDepts;
