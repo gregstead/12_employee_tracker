@@ -6,9 +6,6 @@ const helpers = require("./helpers");
 const connection = require("./connection").connection;
 
 const Department = require("../lib/department");
-const Role = require("../lib/role");
-const Employee = require("../lib/employee");
-const Manager = require("../lib/manager");
 
 // Functions
 
@@ -66,15 +63,6 @@ const addDept = () => {
     const department = new Department(res.dept_name);
     // Write to database
     helpers.addTo(department, "departments");
-  });
-};
-
-const addRole = () => {
-  inquirer.prompt(questions.roleQuestions).then((res) => {
-    // Make role instance
-    const role = new Role(res.title, res.salary, res.dept_id);
-    // Write to database
-    helpers.addTo(role, "roles");
   });
 };
 
